@@ -11,7 +11,7 @@ import { create } from 'vue-modal-dialogs';
 import { router } from '../../router';
 import SuccessModal from '../../modals/SuccessModal.vue';
 import { http } from '../../api/request';
-import { $location } from '../../features/map';
+import { $location, $address } from '../../features/map';
 import { OrderPayload } from './types';
 
 const successBox = create(SuccessModal);
@@ -26,8 +26,7 @@ const toDriverMoved = createEvent();
 
 const fxSendRequest = createEffect<OrderPayload, void>({
   handler: async (body) => {
-    const response = await http.post('/order', body);
-    console.log(response);
+    await http.post('/order', body);
   },
 });
 
@@ -46,6 +45,7 @@ const $$fullModel = combine({
   $isWait,
   $photos,
   $location,
+  $address,
 });
 
 model.onCreateStore((store) => {
@@ -57,7 +57,8 @@ $photos.on(photosUpdated, (_, photos) => photos);
 condition({
   source: sample($isWait, submitForm, (flag) => flag),
   if: Boolean,
-  then: toDriverMoved,
+  // then: toDriverMoved,
+  then: requestCompleted,
   else: requestCompleted,
 });
 
