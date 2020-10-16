@@ -97,6 +97,7 @@ sample({
     canWait: payload.$isWait,
     injury: payload.$description,
     location: [payload.$location.lat, payload.$location.lng],
+    locationName: payload.$address,
   }),
   target: fxSendRequest,
 });

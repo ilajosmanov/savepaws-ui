@@ -1,5 +1,6 @@
 export type OrderPayload = {
-  location: (string | number)[];
+  location: number[];
+  locationName: string;
   name: string;
   phone: string;
   injury: string;
